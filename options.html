@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Memos Quick Capture - Settings</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>body { max-width: 520px; margin: 24px auto; padding: 0 16px; }</style>
+</head>
+<body>
+  <h1>Memos Quick Capture - Settings</h1>
+  <form id="form">
+    <label for="serverUrl">Memos server URL</label>
+    <input type="url" id="serverUrl" placeholder="https://memos.example.com" required>
+
+    <label for="token">Access token <span class="hint">- Memos → Settings → My Account → Access Tokens</span></label>
+    <input type="password" id="token" required autocomplete="off">
+
+    <label for="defaultVisibility">Default visibility</label>
+    <select id="defaultVisibility">
+      <option value="PRIVATE">Private</option>
+      <option value="PROTECTED">Workspace (logged-in users)</option>
+      <option value="PUBLIC">Public</option>
+    </select>
+
+    <label for="defaultTags">Default tags <span class="hint">- optional, e.g. <code>inbox web</code></span></label>
+    <input type="text" id="defaultTags">
+
+    <label class="check"><input type="checkbox" id="includeLink"> Attach page link by default</label>
+
+    <div class="footer">
+      <button type="button" id="test">Test connection</button>
+      <button type="submit" class="primary">Save</button>
+    </div>
+    <div id="status" class="status"></div>
+  </form>
+  <p class="hint">The token is stored only in this browser's local extension storage and is sent only to the server URL above.
+    Keyboard shortcut: <b>Alt+Shift+M</b> (change it at <code>edge://extensions/shortcuts</code>).</p>
+  <script type="module" src="options.js"></script>
+</body>
+</html>
