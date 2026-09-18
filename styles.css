@@ -26,6 +26,8 @@ textarea:focus, input:focus, select:focus { outline: 2px solid var(--accent); ou
 .row > * { flex: 1; }
 .check { display: flex; align-items: center; gap: 6px; font-weight: normal; margin: 8px 0; }
 .check input { margin: 0; }
+.snippet { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+[hidden] { display: none !important; }
 button { padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border); background: var(--field); color: var(--fg); font: inherit; cursor: pointer; }
 button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 600; }
 button:disabled { opacity: .6; cursor: default; }

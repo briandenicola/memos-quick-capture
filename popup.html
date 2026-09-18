@@ -16,6 +16,10 @@
   <form id="form" hidden>
     <textarea id="content" placeholder="What's on your mind? (Markdown supported)" autofocus></textarea>
     <label class="check"><input type="checkbox" id="includeLink"> Attach link to this page</label>
+    <label class="check" id="appendRow" hidden>
+      <input type="checkbox" id="append"> Append to last memo
+      <span class="hint snippet" id="lastSnippet"></span>
+    </label>
     <div class="row">
       <input type="text" id="tags" placeholder="tags, comma or space separated">
       <select id="visibility" style="flex:0 0 110px">

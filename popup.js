@@ -1,4 +1,4 @@
-import { getSettings, createMemo, formatTags, quote, link } from './api.js';
+import { getSettings, createMemo, appendToLastMemo, getLastMemo, formatTags, quote, link } from './api.js';
 
 const $ = (id) => document.getElementById(id);
 const DRAFT_KEY = 'draft';
@@ -24,6 +24,19 @@ async function init() {
   const linkable = /^https?:/.test(tab?.url || '');
   $('includeLink').checked = settings.includeLink && linkable;
   $('includeLink').disabled = !linkable;
+
+  // New memo is the default; appending is opt-in per send.
+  const last = await getLastMemo();
+  if (last) {
+    $('appendRow').hidden = false;
+    $('lastSnippet').textContent = `"${last.snippet}"`;
+    $('lastSnippet').title = last.snippet;
+    $('append').addEventListener('change', () => {
+      const appending = $('append').checked;
+      $('visibility').disabled = appending; // an existing memo keeps its visibility
+      $('send').textContent = appending ? 'Append' : 'Send';
+    });
+  }
 
   // Restore an unsent draft, otherwise pre-fill with the page selection.
   const { [DRAFT_KEY]: draft } = await chrome.storage.local.get(DRAFT_KEY);
@@ -62,7 +75,9 @@ async function send(e) {
   $('send').disabled = true;
   setStatus('Sending…');
   try {
-    const { url } = await createMemo({ content, visibility: $('visibility').value });
+    const { url } = $('append').checked
+      ? await appendToLastMemo(content)
+      : await createMemo({ content, visibility: $('visibility').value });
     await chrome.storage.local.remove(DRAFT_KEY);
     $('content').value = '';
     setStatus('Saved. ', 'ok');

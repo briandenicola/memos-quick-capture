@@ -10,6 +10,7 @@ It is written from scratch in plain JavaScript (Manifest V3), with no build step
   - Markdown text box, pre-filled with any text you've highlighted on the page (as a quote)
   - Optionally attach a link to the current page
   - Tags and visibility (Private / Workspace / Public) per memo
+  - **Append to last memo**: instead of creating a new memo, add to the end of the last memo this extension created (off by default; a preview of that memo is shown next to the checkbox)
   - <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to send
   - Unsent drafts are kept if the popup closes
 - **Right-click menu**: send a selection, link, image, or the whole page in one click, using your default tags and visibility. A ✓ or ! badge on the toolbar icon shows whether it worked.
@@ -47,6 +48,7 @@ To change the keyboard shortcut, go to `edge://extensions/shortcuts` (or `chrome
 | Action | Content sent |
 | --- | --- |
 | Popup | Your text, then `[Page title](url)` if *Attach link* is checked, then `#tags` |
+| Popup with *Append to last memo* | The same content, added after a blank line at the end of the last memo; its visibility is unchanged |
 | Right-click → selection | `> quoted selection` + page link + default tags |
 | Right-click → link | `[link text](link url)` + `via [page](url)` + default tags |
 | Right-click → image | `![](image url)` + `via [page](url)` + default tags |
@@ -56,7 +58,7 @@ To change the keyboard shortcut, go to `edge://extensions/shortcuts` (or `chrome
 
 | Permission | Why |
 | --- | --- |
-| `storage` | Save your settings and unsent draft in **local** extension storage. It is not synced to your browser account. |
+| `storage` | Save your settings, unsent draft, and a reference to the last memo created in **local** extension storage. It is not synced to your browser account. |
 | `contextMenus` | The right-click "Send … to Memos" items. |
 | `activeTab` | Read the current tab's title and URL, only when you click the extension. |
 | `scripting` | Read your highlighted text on the current tab when you open the popup. |
@@ -66,7 +68,7 @@ The access token is sent only to the server URL you configure. The extension mak
 
 ## Compatibility
 
-Targets the Memos v1 API (`POST /api/v1/memos`), used by Memos **0.22 and newer**. *Test connection* tries the auth endpoints used by several Memos versions (`/api/v1/auth/sessions/current`, `/api/v1/auth/me`, `/api/v1/auth/status`).
+Targets the Memos v1 API (`POST /api/v1/memos` to create, `GET` + `PATCH /api/v1/memos/{id}?updateMask=content` to append), used by Memos **0.22 and newer**. *Test connection* tries the auth endpoints used by several Memos versions (`/api/v1/auth/sessions/current`, `/api/v1/auth/me`, `/api/v1/auth/status`).
 
 "Workspace" visibility corresponds to Memos' `PROTECTED` (visible to logged-in users).
 
